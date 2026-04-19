@@ -34,11 +34,16 @@ pub fn analyze_text(text: &str) -> (usize, f64, String) {
         let total_length: usize = words.iter().map(|w| w.len()).sum();
         total_length as f64 / count as f64
     };
-    let longest = words
-        .iter()
-        .max_by_key(|w| w.len())
-        .map(|w| w.to_string())
-        .unwrap_or_default();
+    let longest = if count == 0 {
+        String::new()
+    } else {
+        let max_len = words.iter().map(|w| w.len()).max().unwrap();
+        words
+            .iter()
+            .find(|w| w.len() == max_len)
+            .map(|w| w.to_string())
+            .unwrap_or_default()
+    };
     (count, avg, longest)
 }
 
